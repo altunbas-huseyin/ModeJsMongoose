@@ -1,0 +1,36 @@
+1. adım olaak mongoose kuralım (sudo npm install mongoose)
+2. adım package.json içinde ("mongoose": "*") tanımlamasını yapmamız gerekiyor.
+
+3. adım proje içine models adında bir klasör oluşturuyoruz ve içinde products.js adında dosya oluşturuyoruz.
+products.js içinde aşağıdaki gibi bir şema tanımlaması yapıyoruz.
+
+4. adım app.js içinde aşağıdaki tanımları yapmak gerekiyor, mevcut app.js içinde de bulunmaktadır bu tanımlamalar.
+var mongoose = require('mongoose');
+var fs = require('fs');
+
+fs.readdirSync(__dirname+'/models/').forEach(function(filename)
+{
+    if(~filename.indexOf(".js"))
+    {
+        require(__dirname+'/models/'+filename);
+    }
+
+});
+
+
+ var urlString = 'mongodb://localhost/portfoliodb';
+    mongoose.connect(urlString,function(err,res){
+        if(err){
+            console.log('Error while connecting to ' + urlString + " . ERROR: " + err);
+        }else{
+            console.log('Succeeded connected to ' + urlString);
+        }
+    });
+
+
+
+5. adım routes içinde products.js adında dosya oluşturalım ve içine aşagıdaki kodları yazalım.
+
+
+
+Ve Mutlu Son http://localhost:3000/products eğer database de kayıt var ise json olarak browserda görülebilir.
