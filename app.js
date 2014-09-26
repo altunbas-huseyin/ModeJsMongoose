@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -34,6 +36,19 @@ app.use(function(req, res, next) {
 
 // error handlers
 
+//burada models klasoru icindeki .js uzantılı dosylar otomatik olarak require ediliyor.
+fs.readdirSync(__dirname+'/models/').forEach(function(filename)
+{
+    if(~filename.indexOf(".js"))
+    {
+        require(__dirname+'/models/'+filename);
+    }
+
+});
+//
+
+
+
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -44,6 +59,20 @@ if (app.get('env') === 'development') {
             error: err
         });
     });
+
+
+    //mono database connection
+    var urlString = 'mongodb://localhost/portfoliodb';
+    mongoose.connect(urlString,function(err,res){
+        if(err){
+            console.log('Error while connecting to ' + urlString + " . ERROR: " + err);
+        }else{
+            console.log('Succeeded connected to ' + urlString);
+        }
+    });
+    //
+
+
 }
 
 // production error handler
